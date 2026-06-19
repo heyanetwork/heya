@@ -1,0 +1,52 @@
+version: 2
+
+project_name: heya
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: heyad
+    main: ./cmd/heyad/
+    binary: heyad
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X github.com/cosmos/cosmos-sdk/version.Name=heya -X github.com/cosmos/cosmos-sdk/version.AppName=heyad -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }} -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+
+archives:
+  - id: heyad
+    builds:
+      - heyad
+    name_template: >-
+      {{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}
+    formats:
+      - tar.gz
+    files:
+      - none*
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: '{{ .Version }}-SNAPSHOT-{{ .ShortCommit }}'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - Merge pull request
+      - Merge branch
+
+release:
+  prerelease: auto
+  make_latest: true
