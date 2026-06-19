@@ -8,6 +8,7 @@ DENOM="uheya"
 BINARY="heyad"
 BINARY_PATH="/usr/local/bin/heyad"
 HEYA_DIR="/root/heya"
+GENESIS_FILE="$HEYA_DIR/genesis.json"
 
 print_step() { echo -e "\n\e[1;34m>>> $1\e[0m"; }
 
@@ -26,8 +27,30 @@ CGO_ENABLED=1 go build -ldflags "-X github.com/cosmos/cosmos-sdk/version.Name=he
     -X 'github.com/cosmos/cosmos-sdk/version.BuildTags=cosmwasm wasm'" \
     -o "$BINARY_PATH" ./cmd/heyad/
 
-print_step "Inicjalizacja node'a..."
-$BINARY init "$(hostname)" --chain-id $CHAIN_ID
+print_step "Sprawdzanie czy istnieje juz katalog home..."
+HEYA_HOME="$HOME/.heya"
+if [ -d "$HEYA_HOME/config" ]; then
+    echo "Znaleziono istniejąca konfiguracje, backup kluczy..."
+    [ -f "$HEYA_HOME/config/priv_validator_key.json" ] && cp "$HEYA_HOME/config/priv_validator_key.json" "$HEYA_HOME/config/priv_validator_key.json.bak"
+    [ -f "$HEYA_HOME/config/node_key.json" ] && cp "$HEYA_HOME/config/node_key.json" "$HEYA_HOME/config/node_key.json.bak"
+fi
+
+print_step "Inicjalizacja node'a (generuje config files)..."
+$BINARY init "$(hostname)" --chain-id $CHAIN_ID --overwrite 2>/dev/null
+
+print_step "Przywracanie kluczy i genesis z repozytorium..."
+if [ -f "$HEYA_HOME/config/priv_validator_key.json.bak" ]; then
+    mv "$HEYA_HOME/config/priv_validator_key.json.bak" "$HEYA_HOME/config/priv_validator_key.json"
+fi
+if [ -f "$HEYA_HOME/config/node_key.json.bak" ]; then
+    mv "$HEYA_HOME/config/node_key.json.bak" "$HEYA_HOME/config/node_key.json"
+fi
+if [ ! -f "$GENESIS_FILE" ]; then
+    echo "Blad: Nie znaleziono $GENESIS_FILE!"
+    exit 1
+fi
+cp "$GENESIS_FILE" "$HEYA_HOME/config/genesis.json"
+echo "Skopiowano genesis z repozytorium"
 
 print_step "Konfiguracja persistent_peers..."
 PEERS="${SEED_NODE_ID}@${SEED_IP}:26656"
