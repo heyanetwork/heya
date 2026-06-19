@@ -1,7 +1,7 @@
-# Nebula Chain - Summary
+# Heya Chain - Summary
 
 ## Goal
-Build a Cosmos SDK blockchain (Nebula) with a native coin (HEYA), max supply 10B, and CosmWasm smart contracts.
+Build a Cosmos SDK blockchain (Heya) with a native coin (HEYA), max supply 10B, and CosmWasm smart contracts.
 
 ## Constraints & Preferences
 - Run locally with systemd (`heyad.service`)
@@ -23,7 +23,7 @@ Build a Cosmos SDK blockchain (Nebula) with a native coin (HEYA), max supply 10B
 - Created custom `app/supplycap` module – zeros inflation params when total supply ≥ 10B HEYA
 - Registered supplycap module in `app.RegisterModules()` and in `beginBlockers` before mint
 - Genesis configured: `uheya` denom everywhere, 3 accounts:
-  - alice: 2,000,000,000 HEYA available + 500,000,000 HEYA staked (validator HEYAULA 1)
+  - alice: 1,000,000,000 HEYA available + 1,000,000,000 HEYA staked (validator HEYA 1)
   - bob: 1,500,000,000 HEYA
   - community: 1,000,000,000 HEYA
 - Added validator description (identity, website, security-contact, details)
@@ -81,7 +81,7 @@ Build a Cosmos SDK blockchain (Nebula) with a native coin (HEYA), max supply 10B
 - Max supply of 10B HEYA enforced via custom `app/supplycap` module (BeginBlocker checks supply, zeros inflation params), not at SDK level.
 - 50% supply at genesis (5B HEYA) to allow inflation-based emission for remaining 5B.
 - Seed node data baked into binary source (`cmd/heyad/cmd/config.go`), not config file.
-- Validator renamed to "HEYAULA 1" via `tx staking edit-validator`.
+- Validator renamed to "HEYA 1" via `tx staking edit-validator`.
 - Use `GOPROXY='https://proxy.golang.org,https://goproxy.io,direct'` – proxy.golang.org needed for some packages that goproxy.io can't serve, and vice versa.
 - Store upgrades now handled via `StoreUpgrades` + `UpgradeStoreLoader` in `app/upgrades.go`; new modules can be added without resetting chain state.
 
@@ -105,7 +105,7 @@ Build a Cosmos SDK blockchain (Nebula) with a native coin (HEYA), max supply 10B
   ```
 - **libwasmvm**: loaded from `/root/go/pkg/mod/github.com/\!cosm\!wasm/wasmvm/v2@v2.2.7/internal/api/libwasmvm.x86_64.so` or system `/usr/lib/x86_64-linux-gnu/libwasmvm.x86_64.so`
 - **Store upgrades**: New module store keys added via `app.RegisterStores()`. For existing chains, schedule upgrade via governance → handler in `app/upgrades.go` applies `StoreUpgrades` with `UpgradeStoreLoader`.
-- **Validator**: HEYAULA 1, power 500M uheya, moniker `heya-test`, node ID `1efe4ede5860cd60a36d0161df60fc3e31c2a038` (seed mode).
+- **Validator**: HEYA 1, power 1B uheya, node ID `e1d96e06e0844b787e94393f3ab5594c39c5b234`.
 
 ## Relevant Files
 - `/root/heya/`: chain root

@@ -21,7 +21,7 @@ import (
 	"heya/x/heya/types"
 )
 
-func NebulaKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
+func HeyaKeeper(t testing.TB) (keeper.Keeper, sdk.Context) {
 	storeKey := storetypes.NewKVStoreKey(types.StoreKey)
 
 	db := dbm.NewMemDB()

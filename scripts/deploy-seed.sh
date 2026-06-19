@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-NEBULA_DIR="/root/nebula"
-BINARY="nebulad"
-BINARY_PATH="/usr/local/bin/nebulad"
-CHAIN_ID="nebula-1"
-SEED_NODE_ID="1efe4ede5860cd60a36d0161df60fc3e31c2a038"
+HEYA_DIR="/root/heya"
+BINARY="heyad"
+BINARY_PATH="/usr/local/bin/heyad"
+CHAIN_ID="heya-1"
+SEED_NODE_ID="e1d96e06e0844b787e94393f3ab5594c39c5b234"
 SEED_IP="178.63.164.6"
 
 print_step() { echo -e "\n\e[1;34m>>> $1\e[0m"; }
@@ -27,40 +27,40 @@ if [ ! -f /usr/lib/x86_64-linux-gnu/libwasmvm.x86_64.so ]; then
 fi
 
 print_step "Klonowanie / aktualizacja źródła..."
-if [ ! -d "$NEBULA_DIR" ]; then
-    git clone <repo-url> "$NEBULA_DIR"
+if [ ! -d "$HEYA_DIR" ]; then
+    git clone https://github.com/heya-protocol/heya.git "$HEYA_DIR"
 fi
 
-cd "$NEBULA_DIR"
+cd "$HEYA_DIR"
 git pull
 
 print_step "Budowanie binary..."
-CGO_ENABLED=1 go build -ldflags "-X github.com/cosmos/cosmos-sdk/version.Name=nebula \
-    -X github.com/cosmos/cosmos-sdk/version.AppName=nebulad \
+CGO_ENABLED=1 go build -ldflags "-X github.com/cosmos/cosmos-sdk/version.Name=heya \
+    -X github.com/cosmos/cosmos-sdk/version.AppName=heyad \
     -X github.com/cosmos/cosmos-sdk/version.Version=v1.0.0 \
     -X github.com/cosmos/cosmos-sdk/version.Commit=$(git rev-parse HEAD) \
     -X 'github.com/cosmos/cosmos-sdk/version.BuildTags=cosmwasm wasm'" \
-    -o "$BINARY_PATH" ./cmd/nebulad/
+    -o "$BINARY_PATH" ./cmd/heyad/
 
 print_step "Inicjalizacja jako seed node..."
-$BINARY init "nebula-seed" --chain-id "$CHAIN_ID"
+$BINARY init "heya-seed" --chain-id "$CHAIN_ID"
 
 print_step "Konfiguracja seed_mode..."
-sed -i 's/^seed_mode = .*/seed_mode = true/' ~/.nebula/config/config.toml
-sed -i 's/^seeds = .*/seeds = ""/' ~/.nebula/config/config.toml
-sed -i 's/^persistent_peers = .*/persistent_peers = ""/' ~/.nebula/config/config.toml
-sed -i 's/^laddr = "tcp:\/\/0.0.0.0:26656"/laddr = "tcp:\/\/0.0.0.0:26656"/' ~/.nebula/config/config.toml
+sed -i 's/^seed_mode = .*/seed_mode = true/' ~/.heya/config/config.toml
+sed -i 's/^seeds = .*/seeds = ""/' ~/.heya/config/config.toml
+sed -i 's/^persistent_peers = .*/persistent_peers = ""/' ~/.heya/config/config.toml
+sed -i 's/^laddr = "tcp:\/\/0.0.0.0:26656"/laddr = "tcp:\/\/0.0.0.0:26656"/' ~/.heya/config/config.toml
 
 print_step "Konfiguracja app.toml..."
-sed -i 's/^minimum-gas-prices = .*/minimum-gas-prices = "0.025unebula"/' ~/.nebula/config/app.toml
+sed -i 's/^minimum-gas-prices = .*/minimum-gas-prices = "0.025uheya"/' ~/.heya/config/app.toml
 
 print_step "Kopiowanie genesis.json..."
-cp "$NEBULA_DIR/genesis.json" ~/.nebula/config/genesis.json
+cp "$HEYA_DIR/genesis.json" ~/.heya/config/genesis.json
 
 print_step "Systemd service..."
-cat > /etc/systemd/system/nebulad.service <<EOF
+cat > /etc/systemd/system/heyad.service <<EOF
 [Unit]
-Description=Nebula Seed Node
+Description=Heya Seed Node
 After=network-online.target
 
 [Service]
@@ -75,9 +75,9 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
-systemctl enable nebulad
-systemctl start nebulad
+systemctl enable heyad
+systemctl start heyad
 
 print_step "Seed node uruchomiony!"
 echo "ID:    $($BINARY tendermint show-node-id)"
-echo "Logi:  journalctl -u nebulad -f"
+echo "Logi:  journalctl -u heyad -f"

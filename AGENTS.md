@@ -1,6 +1,6 @@
-# Nebula Chain - Lokalna sieć Cosmos SDK
+# Heya Chain - Lokalna sieć Cosmos SDK
 
-Nazwa: **Nebula** (HEYA)
+Nazwa: **Heya** (HEYA)
 Denom: `uheya` (1 HEYA = 1,000,000 uheya)
 Chain ID: `heya-1`
 Adresy: `heya1...`
