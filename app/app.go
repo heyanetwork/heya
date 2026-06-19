@@ -317,6 +317,9 @@ func New(
 		return nil, err
 	}
 
+	// setup upgrade handlers for future store upgrades
+	app.setupUpgradeHandlers()
+
 	// register streaming services
 	if err := app.RegisterStreamingServices(appOpts, app.kvStoreKeys()); err != nil {
 		return nil, err
