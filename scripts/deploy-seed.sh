@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-HEYA_DIR="/root/heya"
 BINARY="heyad"
-BINARY_PATH="/usr/local/bin/heyad"
+BINARY_PATH="$(go env GOPATH)/bin/heyad"
+HEYA_DIR="$(dirname "$(dirname "$(realpath "$0")")")"
 CHAIN_ID="heya-1"
 SEED_NODE_ID="e1d96e06e0844b787e94393f3ab5594c39c5b234"
 SEED_IP="178.63.164.6"
@@ -12,7 +12,7 @@ print_step() { echo -e "\n\e[1;34m>>> $1\e[0m"; }
 
 print_step "Checking dependencies..."
 if ! command -v go &>/dev/null; then
-    echo "Instalowanie Go 1.26..."
+    echo "Installing Go 1.26..."
     wget -q https://go.dev/dl/go1.26.4.linux-amd64.tar.gz -O /tmp/go.tar.gz
     tar -C /usr/local -xzf /tmp/go.tar.gz
     export PATH="/usr/local/go/bin:$PATH"
@@ -20,13 +20,13 @@ if ! command -v go &>/dev/null; then
 fi
 
 if [ ! -f /usr/lib/x86_64-linux-gnu/libwasmvm.x86_64.so ]; then
-    echo "Instalowanie libwasmvm..."
+    echo "Installing libwasmvm..."
     wget -q "https://github.com/CosmWasm/wasmvm/releases/download/v2.2.7/libwasmvm.x86_64.so" \
         -O /usr/lib/x86_64-linux-gnu/libwasmvm.x86_64.so
     ldconfig
 fi
 
-print_step "Klonowanie / aktualizacja źródła..."
+print_step "Cloning / updating source..."
 if [ ! -d "$HEYA_DIR" ]; then
     git clone https://github.com/heya-protocol/heya.git "$HEYA_DIR"
 fi
@@ -54,7 +54,7 @@ sed -i 's/^laddr = "tcp:\/\/0.0.0.0:26656"/laddr = "tcp:\/\/0.0.0.0:26656"/' ~/.
 print_step "Configuring app.toml..."
 sed -i 's/^minimum-gas-prices = .*/minimum-gas-prices = "0.025uheya"/' ~/.heya/config/app.toml
 
-print_step "Kopiowanie genesis.json..."
+print_step "Copying genesis.json..."
 cp "$HEYA_DIR/genesis.json" ~/.heya/config/genesis.json
 
 print_step "Systemd service..."
@@ -78,6 +78,6 @@ systemctl daemon-reload
 systemctl enable heyad
 systemctl start heyad
 
-print_step "Seed node uruchomiony!"
+print_step "Seed node started!"
 echo "ID:    $($BINARY tendermint show-node-id)"
-echo "Logi:  journalctl -u heyad -f"
+echo "Logs:  journalctl -u heyad -f"
