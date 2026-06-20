@@ -286,7 +286,7 @@
           }
         ],
         "max_deposit_period": "172800s",
-        "voting_period": "172800s",
+        "voting_period": "432000s",
         "quorum": "0.334000000000000000",
         "threshold": "0.500000000000000000",
         "veto_threshold": "0.334000000000000000",
@@ -388,8 +388,8 @@
       "params": {
         "mint_denom": "uheya",
         "inflation_rate_change": "0.130000000000000000",
-        "inflation_max": "0.200000000000000000",
-        "inflation_min": "0.070000000000000000",
+        "inflation_max": "0.300000000000000000",
+        "inflation_min": "0.050000000000000000",
         "goal_bonded": "0.670000000000000000",
         "blocks_per_year": "6311520"
       }
@@ -414,7 +414,7 @@
     "staking": {
       "params": {
         "unbonding_time": "1814400s",
-        "max_validators": 100,
+        "max_validators": 25,
         "max_entries": 7,
         "historical_entries": 10000,
         "bond_denom": "uheya",
