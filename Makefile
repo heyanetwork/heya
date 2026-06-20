@@ -10,7 +10,7 @@ LD_FLAGS = -X github.com/cosmos/cosmos-sdk/version.Name=heya \
 	-X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT)
 
 build:
-	go build -ldflags "$(LD_FLAGS)" -o $(BUILD_DIR)/$(BINARY) ./cmd/heyad
+	go build -trimpath -ldflags "-s -w $(LD_FLAGS)" -o $(BUILD_DIR)/$(BINARY) ./cmd/heyad
 
 install:
-	go install -ldflags "$(LD_FLAGS)" ./cmd/heyad
+	go install -trimpath -ldflags "-s -w $(LD_FLAGS)" ./cmd/heyad
