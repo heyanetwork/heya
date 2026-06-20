@@ -282,7 +282,7 @@
         "min_deposit": [
           {
             "denom": "uheya",
-            "amount": "10000000"
+            "amount": "10000000000"
           }
         ],
         "max_deposit_period": "172800s",
