@@ -6,7 +6,7 @@ SEED_IP="178.63.164.6"
 CHAIN_ID="heya-1"
 DENOM="uheya"
 BINARY="heyad"
-BINARY_PATH="/usr/local/bin/heyad"
+BINARY_PATH="$(go env GOPATH)/bin/heyad"
 HEYA_DIR="/root/heya"
 
 print_step() { echo -e "\n\e[1;34m>>> $1\e[0m"; }
