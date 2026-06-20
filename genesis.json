@@ -442,10 +442,10 @@
     "wasm": {
       "params": {
         "code_upload_access": {
-          "permission": "Everybody",
-          "addresses": []
+          "permission": "AccessControl",
+          "addresses": ["heya1hfvrnfndx46xvv8dmvyh7p7p4t5r2h4m69ujf9", "heya1jcevvf2uckksx8a8jpv2trulyfcfw68q24ye0l"]
         },
-        "instantiate_default_permission": "Everybody"
+        "instantiate_default_permission": "AccessControl"
       },
       "codes": [],
       "contracts": [],
