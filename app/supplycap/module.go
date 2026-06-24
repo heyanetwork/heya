@@ -58,7 +58,7 @@ func (am AppModule) BeginBlock(ctx context.Context) error {
 			if err := am.mintKeeper.Params.Set(sdkCtx, params); err != nil {
 				return err
 			}
-			sdkCtx.Logger().Info("max supply 10B NEB reached, inflation set to 0")
+			sdkCtx.Logger().Info("max supply 10B HEYA reached, inflation set to 0")
 		}
 	}
 	return nil
