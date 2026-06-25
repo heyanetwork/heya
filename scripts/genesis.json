@@ -171,7 +171,7 @@
           "coins": [
             {
               "denom": "uheya",
-              "amount": "2000000000000000"
+              "amount": "1000000000000000"
             }
           ]
         }
@@ -179,7 +179,7 @@
       "supply": [
         {
           "denom": "uheya",
-          "amount": "6000000000000000"
+          "amount": "5000000000000000"
         }
       ],
       "denom_metadata": [],
@@ -202,9 +202,9 @@
     },
     "distribution": {
       "params": {
-        "community_tax": "0.000000000000000000",
-        "base_proposer_reward": "0.000000000000000000",
-        "bonus_proposer_reward": "0.000000000000000000",
+        "community_tax": "0.010000000000000000",
+        "base_proposer_reward": "0.010000000000000000",
+        "bonus_proposer_reward": "0.040000000000000000",
         "withdraw_addr_enabled": true
       },
       "fee_pool": {
@@ -589,7 +589,12 @@
         "params": {
           "host_enabled": true,
           "allow_messages": [
-            "*"
+            "/cosmos.staking.v1beta1.MsgDelegate",
+            "/cosmos.staking.v1beta1.MsgBeginRedelegate",
+            "/cosmos.staking.v1beta1.MsgUndelegate",
+            "/cosmos.bank.v1beta1.MsgSend",
+            "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
+            "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress"
           ]
         }
       }
@@ -632,7 +637,7 @@
         "max_entries": 7,
         "historical_entries": 10000,
         "bond_denom": "uheya",
-        "min_commission_rate": "0.000000000000000000"
+        "min_commission_rate": "0.025000000000000000"
       },
       "last_total_power": "0",
       "last_validator_powers": [],
@@ -656,10 +661,10 @@
     "wasm": {
       "params": {
         "code_upload_access": {
-          "permission": "Everybody",
+          "permission": "Nobody",
           "addresses": []
         },
-        "instantiate_default_permission": "Everybody"
+        "instantiate_default_permission": "Nobody"
       },
       "codes": [],
       "contracts": [],

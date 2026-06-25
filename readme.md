@@ -30,7 +30,7 @@ go build -o build/heyad ./cmd/heyad/
 
 ## Genesis
 
-Genesis available at `https://github.com/heya-protocol/heya` or on request.
+Genesis available at `https://github.com/heyanetwork/heya` or on request.
 
 ## License
 

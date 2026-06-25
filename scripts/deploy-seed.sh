@@ -28,7 +28,7 @@ fi
 
 print_step "Cloning / updating source..."
 if [ ! -d "$HEYA_DIR" ]; then
-    git clone https://github.com/heya-protocol/heya.git "$HEYA_DIR"
+    git clone https://github.com/heyanetwork/heya.git "$HEYA_DIR"
 fi
 
 cd "$HEYA_DIR"
