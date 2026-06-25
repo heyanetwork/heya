@@ -252,7 +252,7 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "1",
-                "delegator_address": "",
+                "delegator_address": "heya10tqqqwqmfgnft7hut9v0zjap6k34z8gncx4034",
                 "validator_address": "heyavaloper10tqqqwqmfgnft7hut9v0zjap6k34z8gnr9ss0t",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
@@ -314,7 +314,7 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "1",
-                "delegator_address": "",
+                "delegator_address": "heya1zmq5q5q4fd7rq7tgjy08t7hw32gdam8ztaw5nr",
                 "validator_address": "heyavaloper1zmq5q5q4fd7rq7tgjy08t7hw32gdam8zs7ttda",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
@@ -376,7 +376,7 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "1",
-                "delegator_address": "",
+                "delegator_address": "heya1cwxxynz67w7a9cjtdgdqse0yz6m9l5wfpgjcmq",
                 "validator_address": "heyavaloper1cwxxynz67w7a9cjtdgdqse0yz6m9l5wf6th897",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
@@ -438,7 +438,7 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "1",
-                "delegator_address": "",
+                "delegator_address": "heya1t9suclh0sg7p40z2hvqkcwj6xns868wn8taala",
                 "validator_address": "heyavaloper1t9suclh0sg7p40z2hvqkcwj6xns868wnugczpr",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
