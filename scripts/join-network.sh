@@ -139,10 +139,10 @@ else
     DOWNLOAD_URL="https://github.com/heyanetwork/heya/releases/download/${TAG}/${FILENAME}"
     run_with_spinner "Downloading" curl -sSL "$DOWNLOAD_URL" -o /tmp/heya.tar.gz
     run_with_spinner "Extracting" tar -xzf /tmp/heya.tar.gz -C /tmp/
-    cp "/tmp/heya-${VERSION}-${OS}-${ARCH}/heyad" "$BINARY_PATH"
+    cp "/tmp/heya-${TAG}-${OS}-${ARCH}/heyad" "$BINARY_PATH"
     chmod +x "$BINARY_PATH"
     rm -f /tmp/heya.tar.gz
-    rm -rf "/tmp/heya-${VERSION}-${OS}-${ARCH}"
+    rm -rf "/tmp/heya-${TAG}-${OS}-${ARCH}"
     print_ok "Downloaded ${W}$BINARY${N} ${G}v$VERSION${N}"
 fi
 
