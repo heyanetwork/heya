@@ -45,7 +45,7 @@ func (k Keeper) SetDenomAdmin(ctx sdk.Context, denom, admin string) error {
 
 func (k Keeper) AllDenomAdmins(ctx sdk.Context) ([]*types.DenomAuthority, error) {
 	store := k.storeService.OpenKVStore(ctx)
-	iter, err := store.Iterator(nil, nil)
+	iter, err := store.Iterator(types.DenomKeyPrefix, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (k Keeper) AllDenomAdmins(ctx sdk.Context) ([]*types.DenomAuthority, error)
 		key := iter.Key()
 		value := iter.Value()
 		denoms = append(denoms, &types.DenomAuthority{
-			Denom: string(key),
+			Denom: string(key[len(types.DenomKeyPrefix):]),
 			Admin: string(value),
 		})
 	}

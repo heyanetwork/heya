@@ -2,6 +2,7 @@ package tokenfactory
 
 import (
 	"context"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"heya/x/tokenfactory/types"
@@ -59,6 +60,9 @@ func (s msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.MsgMi
 	if err != nil {
 		return nil, err
 	}
+	if err := validateFactoryDenom(coin.Denom); err != nil {
+		return nil, err
+	}
 	admin, exists, err := s.keeper.GetDenomAdmin(ctx, coin.Denom)
 	if err != nil {
 		return nil, err
@@ -99,6 +103,9 @@ func (s msgServer) Burn(goCtx context.Context, msg *types.MsgBurn) (*types.MsgBu
 	if err != nil {
 		return nil, err
 	}
+	if err := validateFactoryDenom(coin.Denom); err != nil {
+		return nil, err
+	}
 	admin, exists, err := s.keeper.GetDenomAdmin(ctx, coin.Denom)
 	if err != nil {
 		return nil, err
@@ -130,6 +137,9 @@ func (s msgServer) Burn(goCtx context.Context, msg *types.MsgBurn) (*types.MsgBu
 
 func (s msgServer) ChangeAdmin(goCtx context.Context, msg *types.MsgChangeAdmin) (*types.MsgChangeAdminResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	if err := validateFactoryDenom(msg.Denom); err != nil {
+		return nil, err
+	}
 	admin, exists, err := s.keeper.GetDenomAdmin(ctx, msg.Denom)
 	if err != nil {
 		return nil, err
@@ -156,6 +166,9 @@ func (s msgServer) ForceTransfer(goCtx context.Context, msg *types.MsgForceTrans
 	ctx := sdk.UnwrapSDKContext(goCtx)
 	coin, err := sdk.ParseCoinNormalized(msg.Amount)
 	if err != nil {
+		return nil, err
+	}
+	if err := validateFactoryDenom(coin.Denom); err != nil {
 		return nil, err
 	}
 	admin, exists, err := s.keeper.GetDenomAdmin(ctx, coin.Denom)
@@ -190,4 +203,11 @@ func (s msgServer) ForceTransfer(goCtx context.Context, msg *types.MsgForceTrans
 		sdk.NewAttribute("amount", coin.Amount.String()),
 	))
 	return &types.MsgForceTransferResponse{}, nil
+}
+
+func validateFactoryDenom(denom string) error {
+	if !strings.HasPrefix(denom, types.DenomPrefix+"/") {
+		return types.ErrInvalidDenom
+	}
+	return nil
 }

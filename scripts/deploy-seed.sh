@@ -3,7 +3,8 @@ set -e
 
 BINARY="heyad"
 BINARY_PATH="$(go env GOPATH)/bin/heyad"
-HEYA_DIR="$(dirname "$(dirname "$(realpath "$0")")")"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+HEYA_DIR="$(dirname "$SCRIPT_DIR")"
 CHAIN_ID="heya-1"
 SEED_NODE_ID="e1d96e06e0844b787e94393f3ab5594c39c5b234"
 SEED_IP="178.63.164.6"
@@ -13,7 +14,7 @@ print_step() { echo -e "\n\e[1;34m>>> $1\e[0m"; }
 print_step "Checking dependencies..."
 if ! command -v go &>/dev/null; then
     echo "Installing Go 1.26..."
-    wget -q https://go.dev/dl/go1.26.4.linux-amd64.tar.gz -O /tmp/go.tar.gz
+    wget -q https://go.dev/dl/go1.26.4.linux-amd64.tar.gz -O /tmp/go.tar.gz || { echo "Failed to download Go"; exit 1; }
     tar -C /usr/local -xzf /tmp/go.tar.gz
     export PATH="/usr/local/go/bin:$PATH"
     echo 'export PATH="/usr/local/go/bin:$PATH"' >> /root/.bashrc
@@ -22,7 +23,7 @@ fi
 if [ ! -f /usr/lib/x86_64-linux-gnu/libwasmvm.x86_64.so ]; then
     echo "Installing libwasmvm..."
     wget -q "https://github.com/CosmWasm/wasmvm/releases/download/v2.2.7/libwasmvm.x86_64.so" \
-        -O /usr/lib/x86_64-linux-gnu/libwasmvm.x86_64.so
+        -O /usr/lib/x86_64-linux-gnu/libwasmvm.x86_64.so || { echo "Failed to download libwasmvm"; exit 1; }
     ldconfig
 fi
 

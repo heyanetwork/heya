@@ -19,7 +19,8 @@ for os in linux darwin; do
         GOOS="$os" GOARCH="$arch" CGO_ENABLED=0 go build \
             -ldflags "-s -w -X github.com/cosmos/cosmos-sdk/version.Name=heya \
                 -X github.com/cosmos/cosmos-sdk/version.AppName=heyad \
-                -X github.com/cosmos/cosmos-sdk/version.Version=${TAG}" \
+                -X github.com/cosmos/cosmos-sdk/version.Version=${TAG} \
+                -X github.com/cosmos/cosmos-sdk/version.Commit=$(git rev-parse HEAD)" \
             -o "build/${BINARY}-${os}-${arch}" ./cmd/heyad/
         tar -czf "build/heya-${TAG}-${os}-${arch}.tar.gz" \
             -C build "${BINARY}-${os}-${arch}"

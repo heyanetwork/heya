@@ -86,6 +86,7 @@ import (
 
 	"heya/app/supplycap"
 	"heya/x/tokenfactory"
+	tokenfactorytypes "heya/x/tokenfactory/types"
 	"heya/docs"
 )
 
@@ -270,7 +271,7 @@ func New(
 	// register wasm and tokenfactory store keys
 	if err := app.RegisterStores(
 		storetypes.NewKVStoreKey(wasmtypes.StoreKey),
-		storetypes.NewKVStoreKey("tokenfactory"),
+		storetypes.NewKVStoreKey(tokenfactorytypes.StoreKey),
 	); err != nil {
 		return nil, err
 	}
@@ -317,7 +318,7 @@ func New(
 
 	// create tokenfactory keeper
 	app.TokenFactoryKeeper = tokenfactory.NewKeeper(
-		runtime.NewKVStoreService(app.UnsafeFindStoreKey("tokenfactory").(*storetypes.KVStoreKey)),
+		runtime.NewKVStoreService(app.UnsafeFindStoreKey(tokenfactorytypes.StoreKey).(*storetypes.KVStoreKey)),
 		app.BankKeeper,
 	)
 
