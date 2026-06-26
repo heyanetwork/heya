@@ -121,6 +121,7 @@ var (
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		wasmtypes.ModuleName,
+		tokenfactorytypes.ModuleName,
 		// chain modules
 // this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
@@ -140,6 +141,7 @@ var (
 		icatypes.ModuleName,
 		ibcfeetypes.ModuleName,
 		wasmtypes.ModuleName,
+		tokenfactorytypes.ModuleName,
 		// chain modules
 // this line is used by starport scaffolding # stargate/app/endBlockers
 	}
