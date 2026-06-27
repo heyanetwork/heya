@@ -15,6 +15,19 @@ build:
 install:
 	go install -trimpath -ldflags "-s -w $(LD_FLAGS)" ./cmd/heyad
 
+tools:
+	cd tools && GONOSUMCHECK=* GONOSUMDB=* GOPROXY=https://goproxy.io,direct \
+		go install \
+			github.com/bufbuild/buf/cmd/buf \
+			golang.org/x/tools/cmd/goimports \
+			google.golang.org/grpc/cmd/protoc-gen-go-grpc \
+			github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
+
+deps-update:
+	go get github.com/hashicorp/go-getter@v1.8.6
+	go get github.com/ulikunitz/xz@v0.5.15
+	go get github.com/dvsekhvalnov/jose2go@v1.7.0
+
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -f $(GOPATH)/bin/$(BINARY)

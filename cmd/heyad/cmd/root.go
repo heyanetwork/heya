@@ -24,6 +24,8 @@ import (
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
 	"heya/app"
+	"heya/x/tokenfactory"
+	tokenfactorytypes "heya/x/tokenfactory/types"
 )
 
 // NewRootCmd creates a new root command for heyad. It is called once in the main function.
@@ -95,6 +97,10 @@ func NewRootCmd() *cobra.Command {
 	var wasmModule wasm.AppModule
 	moduleBasicManager[wasmtypes.ModuleName] = module.CoreAppModuleBasicAdaptor(wasmtypes.ModuleName, wasmModule)
 	autoCliOpts.Modules[wasmtypes.ModuleName] = wasmModule
+
+	// manually register tokenfactory module for CLI support
+	moduleBasicManager[tokenfactorytypes.ModuleName] = tokenfactory.AppModuleBasic{}
+	autoCliOpts.Modules[tokenfactorytypes.ModuleName] = tokenfactory.AppModule{}
 
 	initRootCmd(rootCmd, clientCtx.TxConfig, moduleBasicManager)
 
