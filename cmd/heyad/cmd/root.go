@@ -99,7 +99,10 @@ func NewRootCmd() *cobra.Command {
 	autoCliOpts.Modules[wasmtypes.ModuleName] = wasmModule
 
 	// manually register tokenfactory module for CLI support
-	moduleBasicManager[tokenfactorytypes.ModuleName] = tokenfactory.AppModuleBasic{}
+	tokenfactoryModuleBasic := tokenfactory.AppModuleBasic{}
+	tokenfactoryModuleBasic.RegisterInterfaces(clientCtx.InterfaceRegistry)
+	tokenfactoryModuleBasic.RegisterLegacyAminoCodec(clientCtx.LegacyAmino)
+	moduleBasicManager[tokenfactorytypes.ModuleName] = tokenfactoryModuleBasic
 	autoCliOpts.Modules[tokenfactorytypes.ModuleName] = tokenfactory.AppModule{}
 
 	initRootCmd(rootCmd, clientCtx.TxConfig, moduleBasicManager)

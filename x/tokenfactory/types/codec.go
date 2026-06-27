@@ -12,6 +12,8 @@ func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgBurn{}, "heya/tokenfactory/MsgBurn", nil)
 	cdc.RegisterConcrete(&MsgChangeAdmin{}, "heya/tokenfactory/MsgChangeAdmin", nil)
 	cdc.RegisterConcrete(&MsgForceTransfer{}, "heya/tokenfactory/MsgForceTransfer", nil)
+	cdc.RegisterConcrete(&MsgAcceptAdmin{}, "heya/tokenfactory/MsgAcceptAdmin", nil)
+	cdc.RegisterConcrete(&MsgUpdateParams{}, "heya/tokenfactory/MsgUpdateParams", nil)
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -21,5 +23,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgBurn{},
 		&MsgChangeAdmin{},
 		&MsgForceTransfer{},
+		&MsgAcceptAdmin{},
+		&MsgUpdateParams{},
 	)
 }

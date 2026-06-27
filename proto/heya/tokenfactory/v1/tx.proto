@@ -1,0 +1,80 @@
+syntax = "proto3";
+package heya.tokenfactory.v1;
+
+import "cosmos/msg/v1/msg.proto";
+
+option go_package = "heya/x/tokenfactory/types";
+
+// Msg defines the tokenfactory msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  rpc CreateDenom(MsgCreateDenom) returns (MsgCreateDenomResponse);
+  rpc Mint(MsgMint) returns (MsgMintResponse);
+  rpc Burn(MsgBurn) returns (MsgBurnResponse);
+  rpc ChangeAdmin(MsgChangeAdmin) returns (MsgChangeAdminResponse);
+  rpc ForceTransfer(MsgForceTransfer) returns (MsgForceTransferResponse);
+  rpc AcceptAdmin(MsgAcceptAdmin) returns (MsgAcceptAdminResponse);
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+}
+
+message MsgCreateDenom {
+  option (cosmos.msg.v1.signer) = "sender";
+  string sender = 1;
+  string subdenom = 2;
+}
+
+message MsgCreateDenomResponse {
+  string denom = 1;
+}
+
+message MsgMint {
+  option (cosmos.msg.v1.signer) = "sender";
+  string sender = 1;
+  string amount = 2;
+  string mint_to = 3;
+}
+
+message MsgMintResponse {}
+
+message MsgBurn {
+  option (cosmos.msg.v1.signer) = "sender";
+  string sender = 1;
+  string amount = 2;
+}
+
+message MsgBurnResponse {}
+
+message MsgChangeAdmin {
+  option (cosmos.msg.v1.signer) = "sender";
+  string sender = 1;
+  string denom = 2;
+  string new_admin = 3;
+}
+
+message MsgChangeAdminResponse {}
+
+message MsgForceTransfer {
+  option (cosmos.msg.v1.signer) = "sender";
+  string sender = 1;
+  string amount = 2;
+  string dest_addr = 3;
+  string from_address = 4;
+}
+
+message MsgForceTransferResponse {}
+
+message MsgAcceptAdmin {
+  option (cosmos.msg.v1.signer) = "admin";
+  string admin = 1;
+  string denom = 2;
+}
+
+message MsgAcceptAdminResponse {}
+
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+  string denom_creation_fee = 2;
+}
+
+message MsgUpdateParamsResponse {}

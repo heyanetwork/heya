@@ -11,6 +11,7 @@ import (
 var _ types.QueryServer = Querier{}
 
 type Querier struct {
+	types.UnimplementedQueryServer
 	keeper Keeper
 }
 
@@ -30,6 +31,11 @@ func (q Querier) DenomAdmin(goCtx context.Context, req *types.QueryDenomAdminReq
 	return &types.QueryDenomAdminResponse{Admin: admin}, nil
 }
 
-func (q Querier) Params(_ context.Context, _ *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
-	return &types.QueryParamsResponse{Params: types.DefaultParams()}, nil
+func (q Querier) Params(goCtx context.Context, _ *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	params, err := q.keeper.GetParams(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &types.QueryParamsResponse{DenomCreationFee: params.DenomCreationFee.String()}, nil
 }
