@@ -30,6 +30,7 @@ import (
 	evidencetypes "cosmossdk.io/x/evidence/types"
 
 	"heya/app/supplycap"
+	erc20types "heya/x/erc20/types"
 	tokenfactorytypes "heya/x/tokenfactory/types"
 	"cosmossdk.io/x/feegrant"
 	"cosmossdk.io/x/nft"
@@ -95,6 +96,7 @@ var (
 		circuittypes.ModuleName,
 		wasmtypes.ModuleName,
 		tokenfactorytypes.ModuleName,
+		erc20types.ModuleName,
 		// chain modules
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
@@ -122,6 +124,7 @@ var (
 		ibcfeetypes.ModuleName,
 		wasmtypes.ModuleName,
 		tokenfactorytypes.ModuleName,
+		erc20types.ModuleName,
 		// chain modules
 // this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
@@ -142,6 +145,7 @@ var (
 		ibcfeetypes.ModuleName,
 		wasmtypes.ModuleName,
 		tokenfactorytypes.ModuleName,
+		erc20types.ModuleName,
 		// chain modules
 // this line is used by starport scaffolding # stargate/app/endBlockers
 	}

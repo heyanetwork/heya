@@ -85,6 +85,8 @@ import (
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"heya/app/supplycap"
+	"heya/x/erc20"
+	erc20types "heya/x/erc20/types"
 	"heya/x/tokenfactory"
 	tokenfactorytypes "heya/x/tokenfactory/types"
 	"heya/docs"
@@ -153,6 +155,7 @@ type App struct {
 	WasmKeeper         wasmkeeper.Keeper
 	ScopedWasmKeeper   capabilitykeeper.ScopedKeeper
 	TokenFactoryKeeper tokenfactory.Keeper
+	Erc20Keeper        erc20.Keeper
 
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
@@ -193,6 +196,7 @@ func AppConfig() depinject.Config {
 				genutiltypes.ModuleName:           genutil.NewAppModuleBasic(genutiltypes.DefaultMessageValidator),
 				govtypes.ModuleName:               gov.NewAppModuleBasic(getGovProposalHandlers()),
 				tokenfactorytypes.ModuleName: tokenfactory.AppModuleBasic{},
+				erc20types.ModuleName:       erc20.AppModuleBasic{},
 				// this line is used by starport scaffolding # stargate/appConfig/moduleBasic
 			},
 		),
@@ -269,10 +273,11 @@ func New(
 	// build app
 	app.App = appBuilder.Build(db, traceStore, baseAppOptions...)
 
-	// register wasm and tokenfactory store keys
+	// register wasm, tokenfactory and erc20 store keys
 	if err := app.RegisterStores(
 		storetypes.NewKVStoreKey(wasmtypes.StoreKey),
 		storetypes.NewKVStoreKey(tokenfactorytypes.StoreKey),
+		storetypes.NewKVStoreKey(erc20types.StoreKey),
 	); err != nil {
 		return nil, err
 	}
@@ -324,9 +329,16 @@ func New(
 		authtypes.NewModuleAddress(govtypes.ModuleName).String(),
 	)
 
+	// create erc20 keeper
+	app.Erc20Keeper = erc20.NewKeeper(
+		runtime.NewKVStoreService(app.UnsafeFindStoreKey(erc20types.StoreKey).(*storetypes.KVStoreKey)),
+		app.BankKeeper,
+	)
+
 	if err := app.RegisterModules(
 		supplycap.NewAppModule(app.BankKeeper, app.MintKeeper),
 		tokenfactory.NewAppModule(app.appCodec, app.TokenFactoryKeeper),
+		erc20.NewAppModule(app.appCodec, app.Erc20Keeper, authtypes.NewModuleAddress(govtypes.ModuleName).String()),
 		wasm.NewAppModule(app.appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.MsgServiceRouter(), app.GetSubspace(wasmtypes.ModuleName)),
 	); err != nil {
 		return nil, err

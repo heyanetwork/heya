@@ -24,6 +24,8 @@ import (
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 
 	"heya/app"
+	"heya/x/erc20"
+	erc20types "heya/x/erc20/types"
 	"heya/x/tokenfactory"
 	tokenfactorytypes "heya/x/tokenfactory/types"
 )
@@ -104,6 +106,13 @@ func NewRootCmd() *cobra.Command {
 	tokenfactoryModuleBasic.RegisterLegacyAminoCodec(clientCtx.LegacyAmino)
 	moduleBasicManager[tokenfactorytypes.ModuleName] = tokenfactoryModuleBasic
 	autoCliOpts.Modules[tokenfactorytypes.ModuleName] = tokenfactory.AppModule{}
+
+	// manually register erc20 module for CLI support
+	erc20ModuleBasic := erc20.AppModuleBasic{}
+	erc20ModuleBasic.RegisterInterfaces(clientCtx.InterfaceRegistry)
+	erc20ModuleBasic.RegisterLegacyAminoCodec(clientCtx.LegacyAmino)
+	moduleBasicManager[erc20types.ModuleName] = erc20ModuleBasic
+	autoCliOpts.Modules[erc20types.ModuleName] = erc20.AppModule{}
 
 	initRootCmd(rootCmd, clientCtx.TxConfig, moduleBasicManager)
 
