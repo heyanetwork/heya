@@ -27,6 +27,7 @@ func NewTxCmd() *cobra.Command {
 		NewAcceptAdminCmd(),
 		NewForceTransferCmd(),
 		NewUpdateParamsCmd(),
+		NewUpdateSupplyCapCmd(),
 	)
 	return txCmd
 }
@@ -44,6 +45,26 @@ func NewUpdateParamsCmd() *cobra.Command {
 				return err
 			}
 			msg := types.NewMsgUpdateParams(clientCtx.GetFromAddress().String(), args[0])
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+	flags.AddTxFlagsToCmd(cmd)
+	return cmd
+}
+
+func NewUpdateSupplyCapCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "update-supply-cap [denom] [new-cap]",
+		Short:   "Update supply cap for a denom via governance proposal",
+		Long:    "Update the supply cap for a denom. The authority (governance module) must sign. The new cap must be >= current supply. Use 'heyad tx gov submit-proposal' for standard governance flow.",
+		Example: version.AppName + " tx tokenfactory update-supply-cap factory/heya1abc123/mytoken 2000000000000000",
+		Args:    cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+			msg := types.NewMsgUpdateSupplyCap(clientCtx.GetFromAddress().String(), args[0], args[1])
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

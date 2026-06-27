@@ -2,6 +2,7 @@ package tokenfactory
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	sdkmath "cosmossdk.io/math"
@@ -337,6 +338,53 @@ func (s msgServer) UpdateParams(goCtx context.Context, msg *types.MsgUpdateParam
 		sdk.NewAttribute("denom_creation_fee", msg.DenomCreationFee),
 	))
 	return &types.MsgUpdateParamsResponse{}, nil
+}
+
+func (s msgServer) UpdateSupplyCap(goCtx context.Context, msg *types.MsgUpdateSupplyCap) (*types.MsgUpdateSupplyCapResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	if msg.Authority != s.keeper.GetAuthority() {
+		return nil, types.ErrUnauthorized.Wrap("only governance can update supply cap")
+	}
+
+	if err := validateFactoryDenom(msg.Denom); err != nil {
+		return nil, err
+	}
+
+	// Verify denom exists
+	_, exists, err := s.keeper.GetDenomAdmin(ctx, msg.Denom)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, types.ErrDenomNotFound
+	}
+
+	cap, ok := sdkmath.NewIntFromString(msg.NewCap)
+	if !ok || !cap.IsPositive() {
+		return nil, fmt.Errorf("new_cap must be a positive integer")
+	}
+
+	// Verify new cap is not lower than current supply
+	currentSupply := s.keeper.bankKeeper.GetSupply(ctx, msg.Denom)
+	if currentSupply.Amount.GT(cap) {
+		return nil, types.ErrSupplyCapExceeded.Wrapf(
+			"current supply %s > new cap %s", currentSupply.Amount.String(), cap.String(),
+		)
+	}
+
+	if err := s.keeper.SetSupplyCap(ctx, msg.Denom, cap); err != nil {
+		return nil, err
+	}
+
+	ctx.EventManager().EmitEvent(sdk.NewEvent(
+		types.ModuleName,
+		sdk.NewAttribute("action", "update_supply_cap"),
+		sdk.NewAttribute("authority", msg.Authority),
+		sdk.NewAttribute("denom", msg.Denom),
+		sdk.NewAttribute("new_cap", msg.NewCap),
+	))
+	return &types.MsgUpdateSupplyCapResponse{}, nil
 }
 
 func validateFactoryDenom(denom string) error {

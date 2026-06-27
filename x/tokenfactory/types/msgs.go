@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	sdkmath "cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -144,6 +145,11 @@ func (m *MsgForceTransfer) ValidateBasic() error {
 	if _, err := sdk.AccAddressFromBech32(m.DestAddr); err != nil {
 		return ErrInvalidCreator
 	}
+	if m.FromAddress != "" {
+		if _, err := sdk.AccAddressFromBech32(m.FromAddress); err != nil {
+			return ErrInvalidCreator
+		}
+	}
 	coin, err := sdk.ParseCoinNormalized(m.Amount)
 	if err != nil {
 		return err
@@ -208,4 +214,27 @@ func (m *MsgUpdateParams) GetSigners() []sdk.AccAddress {
 
 func NewMsgUpdateParams(authority, denomCreationFee string) *MsgUpdateParams {
 	return &MsgUpdateParams{Authority: authority, DenomCreationFee: denomCreationFee}
+}
+
+func NewMsgUpdateSupplyCap(authority, denom, newCap string) *MsgUpdateSupplyCap {
+	return &MsgUpdateSupplyCap{Authority: authority, Denom: denom, NewCap: newCap}
+}
+
+func (m *MsgUpdateSupplyCap) ValidateBasic() error {
+	if _, err := sdk.AccAddressFromBech32(m.Authority); err != nil {
+		return ErrInvalidCreator.Wrap("invalid authority address")
+	}
+	if err := validateFactoryDenomInMsg(m.Denom); err != nil {
+		return err
+	}
+	cap, ok := sdkmath.NewIntFromString(m.NewCap)
+	if !ok || !cap.IsPositive() {
+		return fmt.Errorf("new_cap must be a positive integer")
+	}
+	return nil
+}
+
+func (m *MsgUpdateSupplyCap) GetSigners() []sdk.AccAddress {
+	addr, _ := sdk.AccAddressFromBech32(m.Authority)
+	return []sdk.AccAddress{addr}
 }

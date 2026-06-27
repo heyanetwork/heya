@@ -19,13 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Msg_CreateDenom_FullMethodName   = "/heya.tokenfactory.v1.Msg/CreateDenom"
-	Msg_Mint_FullMethodName          = "/heya.tokenfactory.v1.Msg/Mint"
-	Msg_Burn_FullMethodName          = "/heya.tokenfactory.v1.Msg/Burn"
-	Msg_ChangeAdmin_FullMethodName   = "/heya.tokenfactory.v1.Msg/ChangeAdmin"
-	Msg_ForceTransfer_FullMethodName = "/heya.tokenfactory.v1.Msg/ForceTransfer"
-	Msg_AcceptAdmin_FullMethodName   = "/heya.tokenfactory.v1.Msg/AcceptAdmin"
-	Msg_UpdateParams_FullMethodName  = "/heya.tokenfactory.v1.Msg/UpdateParams"
+	Msg_CreateDenom_FullMethodName     = "/heya.tokenfactory.v1.Msg/CreateDenom"
+	Msg_Mint_FullMethodName            = "/heya.tokenfactory.v1.Msg/Mint"
+	Msg_Burn_FullMethodName            = "/heya.tokenfactory.v1.Msg/Burn"
+	Msg_ChangeAdmin_FullMethodName     = "/heya.tokenfactory.v1.Msg/ChangeAdmin"
+	Msg_ForceTransfer_FullMethodName   = "/heya.tokenfactory.v1.Msg/ForceTransfer"
+	Msg_AcceptAdmin_FullMethodName     = "/heya.tokenfactory.v1.Msg/AcceptAdmin"
+	Msg_UpdateParams_FullMethodName    = "/heya.tokenfactory.v1.Msg/UpdateParams"
+	Msg_UpdateSupplyCap_FullMethodName = "/heya.tokenfactory.v1.Msg/UpdateSupplyCap"
 )
 
 // MsgClient is the client API for Msg service.
@@ -41,6 +42,7 @@ type MsgClient interface {
 	ForceTransfer(ctx context.Context, in *MsgForceTransfer, opts ...grpc.CallOption) (*MsgForceTransferResponse, error)
 	AcceptAdmin(ctx context.Context, in *MsgAcceptAdmin, opts ...grpc.CallOption) (*MsgAcceptAdminResponse, error)
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	UpdateSupplyCap(ctx context.Context, in *MsgUpdateSupplyCap, opts ...grpc.CallOption) (*MsgUpdateSupplyCapResponse, error)
 }
 
 type msgClient struct {
@@ -121,6 +123,16 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 	return out, nil
 }
 
+func (c *msgClient) UpdateSupplyCap(ctx context.Context, in *MsgUpdateSupplyCap, opts ...grpc.CallOption) (*MsgUpdateSupplyCapResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MsgUpdateSupplyCapResponse)
+	err := c.cc.Invoke(ctx, Msg_UpdateSupplyCap_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility.
@@ -134,6 +146,7 @@ type MsgServer interface {
 	ForceTransfer(context.Context, *MsgForceTransfer) (*MsgForceTransferResponse, error)
 	AcceptAdmin(context.Context, *MsgAcceptAdmin) (*MsgAcceptAdminResponse, error)
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	UpdateSupplyCap(context.Context, *MsgUpdateSupplyCap) (*MsgUpdateSupplyCapResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -164,6 +177,9 @@ func (UnimplementedMsgServer) AcceptAdmin(context.Context, *MsgAcceptAdmin) (*Ms
 }
 func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateParams not implemented")
+}
+func (UnimplementedMsgServer) UpdateSupplyCap(context.Context, *MsgUpdateSupplyCap) (*MsgUpdateSupplyCapResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateSupplyCap not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 func (UnimplementedMsgServer) testEmbeddedByValue()             {}
@@ -312,6 +328,24 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_UpdateSupplyCap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateSupplyCap)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateSupplyCap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_UpdateSupplyCap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateSupplyCap(ctx, req.(*MsgUpdateSupplyCap))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -346,6 +380,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateParams",
 			Handler:    _Msg_UpdateParams_Handler,
+		},
+		{
+			MethodName: "UpdateSupplyCap",
+			Handler:    _Msg_UpdateSupplyCap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

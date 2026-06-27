@@ -41,11 +41,16 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 func (k Keeper) GetAllowance(ctx sdk.Context, owner, spender, denom string) sdkmath.Int {
 	store := k.storeService.OpenKVStore(ctx)
 	bz, err := store.Get(types.AllowanceKey(owner, spender, denom))
-	if err != nil || bz == nil {
+	if err != nil {
+		k.Logger(ctx).Error("failed to get allowance", "error", err)
+		return sdkmath.ZeroInt()
+	}
+	if bz == nil {
 		return sdkmath.ZeroInt()
 	}
 	amt, ok := sdkmath.NewIntFromString(string(bz))
 	if !ok {
+		k.Logger(ctx).Error("invalid allowance value", "value", string(bz))
 		return sdkmath.ZeroInt()
 	}
 	return amt

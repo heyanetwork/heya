@@ -15,6 +15,7 @@ service Msg {
   rpc ForceTransfer(MsgForceTransfer) returns (MsgForceTransferResponse);
   rpc AcceptAdmin(MsgAcceptAdmin) returns (MsgAcceptAdminResponse);
   rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  rpc UpdateSupplyCap(MsgUpdateSupplyCap) returns (MsgUpdateSupplyCapResponse);
 }
 
 message MsgCreateDenom {
@@ -78,3 +79,12 @@ message MsgUpdateParams {
 }
 
 message MsgUpdateParamsResponse {}
+
+message MsgUpdateSupplyCap {
+  option (cosmos.msg.v1.signer) = "authority";
+  string authority = 1;
+  string denom = 2;
+  string new_cap = 3;
+}
+
+message MsgUpdateSupplyCapResponse {}

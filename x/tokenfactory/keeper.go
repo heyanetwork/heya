@@ -4,6 +4,7 @@ import (
 	"cosmossdk.io/core/store"
 	"cosmossdk.io/log"
 	sdkmath "cosmossdk.io/math"
+	storetypes "cosmossdk.io/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"heya/x/tokenfactory/types"
 )
@@ -53,7 +54,7 @@ func (k Keeper) SetDenomAdmin(ctx sdk.Context, denom, admin string) error {
 
 func (k Keeper) AllDenomAdmins(ctx sdk.Context) ([]*types.DenomAuthority, error) {
 	store := k.storeService.OpenKVStore(ctx)
-	iter, err := store.Iterator(types.DenomKeyPrefix, nil)
+	iter, err := store.Iterator(types.DenomKeyPrefix, storetypes.PrefixEndBytes(types.DenomKeyPrefix))
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +96,11 @@ func (k Keeper) SetSupplyCap(ctx sdk.Context, denom string, cap sdkmath.Int) err
 func (k Keeper) IsPaused(ctx sdk.Context) bool {
 	store := k.storeService.OpenKVStore(ctx)
 	bz, err := store.Get(types.PausedKey)
-	if err != nil || bz == nil {
+	if err != nil {
+		k.Logger(ctx).Error("failed to get paused key", "error", err)
+		return false
+	}
+	if bz == nil {
 		return false
 	}
 	return string(bz) == "true"
@@ -132,11 +137,16 @@ func (k Keeper) SetPendingAdmin(ctx sdk.Context, denom, admin string) error {
 func (k Keeper) GetParams(ctx sdk.Context) (types.Params, error) {
 	store := k.storeService.OpenKVStore(ctx)
 	bz, err := store.Get(types.ParamsKey)
-	if err != nil || bz == nil {
+	if err != nil {
+		k.Logger(ctx).Error("failed to get params", "error", err)
+		return types.DefaultParams(), nil
+	}
+	if bz == nil {
 		return types.DefaultParams(), nil
 	}
 	coin, err := sdk.ParseCoinNormalized(string(bz))
 	if err != nil {
+		k.Logger(ctx).Error("failed to parse params", "value", string(bz), "error", err)
 		return types.DefaultParams(), nil
 	}
 	return types.Params{DenomCreationFee: coin}, nil

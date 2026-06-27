@@ -207,22 +207,24 @@ func TestMsgForceTransfer_ValidateBasic(t *testing.T) {
 	denom := "factory/" + sender + "/mytoken"
 
 	tests := []struct {
-		name      string
-		sender    string
-		amount    string
-		destAddr  string
-		expectErr bool
+		name        string
+		sender      string
+		amount      string
+		destAddr    string
+		fromAddress string
+		expectErr   bool
 	}{
-		{"valid", sender, "1000" + denom, other, false},
-		{"invalid sender", "bad", "1000" + denom, other, true},
-		{"invalid dest", sender, "1000" + denom, "bad", true},
-		{"non-factory denom", sender, "1000uheya", other, true},
-		{"zero amount", sender, "0" + denom, other, true},
+		{"valid", sender, "1000" + denom, other, "", false},
+		{"invalid sender", "bad", "1000" + denom, other, "", true},
+		{"invalid dest", sender, "1000" + denom, "bad", "", true},
+		{"non-factory denom", sender, "1000uheya", other, "", true},
+		{"zero amount", sender, "0" + denom, other, "", true},
+		{"invalid from address", sender, "1000" + denom, other, "bad", true},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			msg := types.NewMsgForceTransfer(tt.sender, tt.amount, tt.destAddr)
+			msg := types.NewMsgForceTransferFull(tt.sender, tt.amount, tt.destAddr, tt.fromAddress)
 			err := msg.ValidateBasic()
 			if tt.expectErr && err == nil {
 				t.Errorf("expected error but got none")

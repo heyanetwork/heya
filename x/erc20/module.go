@@ -81,7 +81,9 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 
 func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, data json.RawMessage) {
 	if am.keeper.GetAuthority(ctx) == "" && am.authority != "" {
-		_ = am.keeper.SetAuthority(ctx, am.authority)
+		if err := am.keeper.SetAuthority(ctx, am.authority); err != nil {
+			panic(err)
+		}
 	}
 }
 

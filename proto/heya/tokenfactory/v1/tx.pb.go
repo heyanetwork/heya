@@ -678,6 +678,102 @@ func (*MsgUpdateParamsResponse) Descriptor() ([]byte, []int) {
 	return file_heya_tokenfactory_v1_tx_proto_rawDescGZIP(), []int{13}
 }
 
+type MsgUpdateSupplyCap struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Authority     string                 `protobuf:"bytes,1,opt,name=authority,proto3" json:"authority,omitempty"`
+	Denom         string                 `protobuf:"bytes,2,opt,name=denom,proto3" json:"denom,omitempty"`
+	NewCap        string                 `protobuf:"bytes,3,opt,name=new_cap,json=newCap,proto3" json:"new_cap,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MsgUpdateSupplyCap) Reset() {
+	*x = MsgUpdateSupplyCap{}
+	mi := &file_heya_tokenfactory_v1_tx_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MsgUpdateSupplyCap) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MsgUpdateSupplyCap) ProtoMessage() {}
+
+func (x *MsgUpdateSupplyCap) ProtoReflect() protoreflect.Message {
+	mi := &file_heya_tokenfactory_v1_tx_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MsgUpdateSupplyCap.ProtoReflect.Descriptor instead.
+func (*MsgUpdateSupplyCap) Descriptor() ([]byte, []int) {
+	return file_heya_tokenfactory_v1_tx_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *MsgUpdateSupplyCap) GetAuthority() string {
+	if x != nil {
+		return x.Authority
+	}
+	return ""
+}
+
+func (x *MsgUpdateSupplyCap) GetDenom() string {
+	if x != nil {
+		return x.Denom
+	}
+	return ""
+}
+
+func (x *MsgUpdateSupplyCap) GetNewCap() string {
+	if x != nil {
+		return x.NewCap
+	}
+	return ""
+}
+
+type MsgUpdateSupplyCapResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MsgUpdateSupplyCapResponse) Reset() {
+	*x = MsgUpdateSupplyCapResponse{}
+	mi := &file_heya_tokenfactory_v1_tx_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MsgUpdateSupplyCapResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MsgUpdateSupplyCapResponse) ProtoMessage() {}
+
+func (x *MsgUpdateSupplyCapResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_heya_tokenfactory_v1_tx_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MsgUpdateSupplyCapResponse.ProtoReflect.Descriptor instead.
+func (*MsgUpdateSupplyCapResponse) Descriptor() ([]byte, []int) {
+	return file_heya_tokenfactory_v1_tx_proto_rawDescGZIP(), []int{15}
+}
+
 var File_heya_tokenfactory_v1_tx_proto protoreflect.FileDescriptor
 
 const file_heya_tokenfactory_v1_tx_proto_rawDesc = "" +
@@ -716,7 +812,12 @@ const file_heya_tokenfactory_v1_tx_proto_rawDesc = "" +
 	"\x0fMsgUpdateParams\x12\x1c\n" +
 	"\tauthority\x18\x01 \x01(\tR\tauthority\x12,\n" +
 	"\x12denom_creation_fee\x18\x02 \x01(\tR\x10denomCreationFee:\x0e\x82\xe7\xb0*\tauthority\"\x19\n" +
-	"\x17MsgUpdateParamsResponse2\xa0\x05\n" +
+	"\x17MsgUpdateParamsResponse\"q\n" +
+	"\x12MsgUpdateSupplyCap\x12\x1c\n" +
+	"\tauthority\x18\x01 \x01(\tR\tauthority\x12\x14\n" +
+	"\x05denom\x18\x02 \x01(\tR\x05denom\x12\x17\n" +
+	"\anew_cap\x18\x03 \x01(\tR\x06newCap:\x0e\x82\xe7\xb0*\tauthority\"\x1c\n" +
+	"\x1aMsgUpdateSupplyCapResponse2\x8f\x06\n" +
 	"\x03Msg\x12a\n" +
 	"\vCreateDenom\x12$.heya.tokenfactory.v1.MsgCreateDenom\x1a,.heya.tokenfactory.v1.MsgCreateDenomResponse\x12L\n" +
 	"\x04Mint\x12\x1d.heya.tokenfactory.v1.MsgMint\x1a%.heya.tokenfactory.v1.MsgMintResponse\x12L\n" +
@@ -724,7 +825,8 @@ const file_heya_tokenfactory_v1_tx_proto_rawDesc = "" +
 	"\vChangeAdmin\x12$.heya.tokenfactory.v1.MsgChangeAdmin\x1a,.heya.tokenfactory.v1.MsgChangeAdminResponse\x12g\n" +
 	"\rForceTransfer\x12&.heya.tokenfactory.v1.MsgForceTransfer\x1a..heya.tokenfactory.v1.MsgForceTransferResponse\x12a\n" +
 	"\vAcceptAdmin\x12$.heya.tokenfactory.v1.MsgAcceptAdmin\x1a,.heya.tokenfactory.v1.MsgAcceptAdminResponse\x12d\n" +
-	"\fUpdateParams\x12%.heya.tokenfactory.v1.MsgUpdateParams\x1a-.heya.tokenfactory.v1.MsgUpdateParamsResponse\x1a\x05\x80\xe7\xb0*\x01B\x1bZ\x19heya/x/tokenfactory/typesb\x06proto3"
+	"\fUpdateParams\x12%.heya.tokenfactory.v1.MsgUpdateParams\x1a-.heya.tokenfactory.v1.MsgUpdateParamsResponse\x12m\n" +
+	"\x0fUpdateSupplyCap\x12(.heya.tokenfactory.v1.MsgUpdateSupplyCap\x1a0.heya.tokenfactory.v1.MsgUpdateSupplyCapResponse\x1a\x05\x80\xe7\xb0*\x01B\x1bZ\x19heya/x/tokenfactory/typesb\x06proto3"
 
 var (
 	file_heya_tokenfactory_v1_tx_proto_rawDescOnce sync.Once
@@ -738,22 +840,24 @@ func file_heya_tokenfactory_v1_tx_proto_rawDescGZIP() []byte {
 	return file_heya_tokenfactory_v1_tx_proto_rawDescData
 }
 
-var file_heya_tokenfactory_v1_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_heya_tokenfactory_v1_tx_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_heya_tokenfactory_v1_tx_proto_goTypes = []any{
-	(*MsgCreateDenom)(nil),           // 0: heya.tokenfactory.v1.MsgCreateDenom
-	(*MsgCreateDenomResponse)(nil),   // 1: heya.tokenfactory.v1.MsgCreateDenomResponse
-	(*MsgMint)(nil),                  // 2: heya.tokenfactory.v1.MsgMint
-	(*MsgMintResponse)(nil),          // 3: heya.tokenfactory.v1.MsgMintResponse
-	(*MsgBurn)(nil),                  // 4: heya.tokenfactory.v1.MsgBurn
-	(*MsgBurnResponse)(nil),          // 5: heya.tokenfactory.v1.MsgBurnResponse
-	(*MsgChangeAdmin)(nil),           // 6: heya.tokenfactory.v1.MsgChangeAdmin
-	(*MsgChangeAdminResponse)(nil),   // 7: heya.tokenfactory.v1.MsgChangeAdminResponse
-	(*MsgForceTransfer)(nil),         // 8: heya.tokenfactory.v1.MsgForceTransfer
-	(*MsgForceTransferResponse)(nil), // 9: heya.tokenfactory.v1.MsgForceTransferResponse
-	(*MsgAcceptAdmin)(nil),           // 10: heya.tokenfactory.v1.MsgAcceptAdmin
-	(*MsgAcceptAdminResponse)(nil),   // 11: heya.tokenfactory.v1.MsgAcceptAdminResponse
-	(*MsgUpdateParams)(nil),          // 12: heya.tokenfactory.v1.MsgUpdateParams
-	(*MsgUpdateParamsResponse)(nil),  // 13: heya.tokenfactory.v1.MsgUpdateParamsResponse
+	(*MsgCreateDenom)(nil),             // 0: heya.tokenfactory.v1.MsgCreateDenom
+	(*MsgCreateDenomResponse)(nil),     // 1: heya.tokenfactory.v1.MsgCreateDenomResponse
+	(*MsgMint)(nil),                    // 2: heya.tokenfactory.v1.MsgMint
+	(*MsgMintResponse)(nil),            // 3: heya.tokenfactory.v1.MsgMintResponse
+	(*MsgBurn)(nil),                    // 4: heya.tokenfactory.v1.MsgBurn
+	(*MsgBurnResponse)(nil),            // 5: heya.tokenfactory.v1.MsgBurnResponse
+	(*MsgChangeAdmin)(nil),             // 6: heya.tokenfactory.v1.MsgChangeAdmin
+	(*MsgChangeAdminResponse)(nil),     // 7: heya.tokenfactory.v1.MsgChangeAdminResponse
+	(*MsgForceTransfer)(nil),           // 8: heya.tokenfactory.v1.MsgForceTransfer
+	(*MsgForceTransferResponse)(nil),   // 9: heya.tokenfactory.v1.MsgForceTransferResponse
+	(*MsgAcceptAdmin)(nil),             // 10: heya.tokenfactory.v1.MsgAcceptAdmin
+	(*MsgAcceptAdminResponse)(nil),     // 11: heya.tokenfactory.v1.MsgAcceptAdminResponse
+	(*MsgUpdateParams)(nil),            // 12: heya.tokenfactory.v1.MsgUpdateParams
+	(*MsgUpdateParamsResponse)(nil),    // 13: heya.tokenfactory.v1.MsgUpdateParamsResponse
+	(*MsgUpdateSupplyCap)(nil),         // 14: heya.tokenfactory.v1.MsgUpdateSupplyCap
+	(*MsgUpdateSupplyCapResponse)(nil), // 15: heya.tokenfactory.v1.MsgUpdateSupplyCapResponse
 }
 var file_heya_tokenfactory_v1_tx_proto_depIdxs = []int32{
 	0,  // 0: heya.tokenfactory.v1.Msg.CreateDenom:input_type -> heya.tokenfactory.v1.MsgCreateDenom
@@ -763,15 +867,17 @@ var file_heya_tokenfactory_v1_tx_proto_depIdxs = []int32{
 	8,  // 4: heya.tokenfactory.v1.Msg.ForceTransfer:input_type -> heya.tokenfactory.v1.MsgForceTransfer
 	10, // 5: heya.tokenfactory.v1.Msg.AcceptAdmin:input_type -> heya.tokenfactory.v1.MsgAcceptAdmin
 	12, // 6: heya.tokenfactory.v1.Msg.UpdateParams:input_type -> heya.tokenfactory.v1.MsgUpdateParams
-	1,  // 7: heya.tokenfactory.v1.Msg.CreateDenom:output_type -> heya.tokenfactory.v1.MsgCreateDenomResponse
-	3,  // 8: heya.tokenfactory.v1.Msg.Mint:output_type -> heya.tokenfactory.v1.MsgMintResponse
-	5,  // 9: heya.tokenfactory.v1.Msg.Burn:output_type -> heya.tokenfactory.v1.MsgBurnResponse
-	7,  // 10: heya.tokenfactory.v1.Msg.ChangeAdmin:output_type -> heya.tokenfactory.v1.MsgChangeAdminResponse
-	9,  // 11: heya.tokenfactory.v1.Msg.ForceTransfer:output_type -> heya.tokenfactory.v1.MsgForceTransferResponse
-	11, // 12: heya.tokenfactory.v1.Msg.AcceptAdmin:output_type -> heya.tokenfactory.v1.MsgAcceptAdminResponse
-	13, // 13: heya.tokenfactory.v1.Msg.UpdateParams:output_type -> heya.tokenfactory.v1.MsgUpdateParamsResponse
-	7,  // [7:14] is the sub-list for method output_type
-	0,  // [0:7] is the sub-list for method input_type
+	14, // 7: heya.tokenfactory.v1.Msg.UpdateSupplyCap:input_type -> heya.tokenfactory.v1.MsgUpdateSupplyCap
+	1,  // 8: heya.tokenfactory.v1.Msg.CreateDenom:output_type -> heya.tokenfactory.v1.MsgCreateDenomResponse
+	3,  // 9: heya.tokenfactory.v1.Msg.Mint:output_type -> heya.tokenfactory.v1.MsgMintResponse
+	5,  // 10: heya.tokenfactory.v1.Msg.Burn:output_type -> heya.tokenfactory.v1.MsgBurnResponse
+	7,  // 11: heya.tokenfactory.v1.Msg.ChangeAdmin:output_type -> heya.tokenfactory.v1.MsgChangeAdminResponse
+	9,  // 12: heya.tokenfactory.v1.Msg.ForceTransfer:output_type -> heya.tokenfactory.v1.MsgForceTransferResponse
+	11, // 13: heya.tokenfactory.v1.Msg.AcceptAdmin:output_type -> heya.tokenfactory.v1.MsgAcceptAdminResponse
+	13, // 14: heya.tokenfactory.v1.Msg.UpdateParams:output_type -> heya.tokenfactory.v1.MsgUpdateParamsResponse
+	15, // 15: heya.tokenfactory.v1.Msg.UpdateSupplyCap:output_type -> heya.tokenfactory.v1.MsgUpdateSupplyCapResponse
+	8,  // [8:16] is the sub-list for method output_type
+	0,  // [0:8] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -788,7 +894,7 @@ func file_heya_tokenfactory_v1_tx_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_heya_tokenfactory_v1_tx_proto_rawDesc), len(file_heya_tokenfactory_v1_tx_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
