@@ -18,6 +18,11 @@ import (
 	"heya/app"
 )
 
+func tempHome() string {
+	dir, _ := os.MkdirTemp("", "heya-sim-*")
+	return dir
+}
+
 // Profile with:
 // `go test -benchmem -run=^$ -bench ^BenchmarkFullAppSimulation ./app -Commit=true -cpuprofile cpu.out`
 func BenchmarkFullAppSimulation(b *testing.B) {
@@ -41,7 +46,9 @@ func BenchmarkFullAppSimulation(b *testing.B) {
 	}()
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
-	appOptions[flags.FlagHome] = app.DefaultNodeHome
+	homeDir := tempHome()
+	defer os.RemoveAll(homeDir)
+	appOptions[flags.FlagHome] = homeDir
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
 
 	bApp, err := app.New(logger, db, nil, true, appOptions, interBlockCacheOpt(), baseapp.SetChainID(SimAppChainID))
@@ -99,7 +106,9 @@ func BenchmarkInvariants(b *testing.B) {
 	}()
 
 	appOptions := make(simtestutil.AppOptionsMap, 0)
-	appOptions[flags.FlagHome] = app.DefaultNodeHome
+	homeDir := tempHome()
+	defer os.RemoveAll(homeDir)
+	appOptions[flags.FlagHome] = homeDir
 	appOptions[server.FlagInvCheckPeriod] = simcli.FlagPeriodValue
 
 	bApp, err := app.New(logger, db, nil, true, appOptions, interBlockCacheOpt(), baseapp.SetChainID(SimAppChainID))
