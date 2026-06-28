@@ -59,6 +59,7 @@ print_step "Copying genesis.json..."
 cp "$HEYA_DIR/scripts/genesis.json" ~/.heya/config/genesis.json
 
 print_step "Systemd service..."
+MEM=$(( $(grep MemTotal /proc/meminfo | awk '{print $2}') * 85 / 100 / 1024 ))MiB
 cat > /etc/systemd/system/heyad.service <<EOF
 [Unit]
 Description=Heya Seed Node
@@ -70,6 +71,8 @@ ExecStart=$BINARY_PATH start
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65535
+Environment=GOMEMLIMIT=$MEM
+Environment=GOGC=100
 
 [Install]
 WantedBy=multi-user.target
